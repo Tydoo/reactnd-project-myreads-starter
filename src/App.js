@@ -10,8 +10,15 @@ import Read from './Read'
 
 class BooksApp extends React.Component {
   state = {
-    query: ''
+    books: []
   }
+
+  componentDidMount() {
+  BooksAPI.getAll().then((books) => {
+    this.setState({ books })
+    console.log(books)
+  })
+}
 
   render() {
     return (

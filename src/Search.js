@@ -1,28 +1,30 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-
+import Book from './Book'
 
 class Search extends Component {
 constructor(props) {
 super(props);
 this.state= {
   query: '',
-  books: []
+  results: []
 }
 }
 
   _updateQuery = (query) => {
     this.setState({ query: query.trim()})
-
-    if (query !== '' || query !== undefined) {
-      BooksAPI.search(this.state.query, 20).then((books) => {
-        this.setState({books})
+    this._searchBooks(query)
       }
 
-)
+  _searchBooks = (query) => {
+    if (query !== '') {
+      BooksAPI.search(this.state.query, 20).then(
+        (results) => { this.setState( {results}) })
+      }
+      return
 }
-}
+
   render() {
 
     return (
@@ -49,11 +51,13 @@ this.state= {
         <div className="search-books-results">
           {console.log(this.state.query)}
           <ol className="books-grid">
-            {this.state.books !== undefined &&( this.state.books.map((book) => (
-            <li key={book.id}>
-              <div className="book">
+            {this.state.results !== undefined && (this.state.results.map((result) => (
+            <li key={result.id}>
+              {console.log(result)}
+              <Book books={this.state.results}/>
+              {/* <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${result.imageLinks.thumbnail})` }}></div>
                   <div className="book-shelf-changer">
                     <select>
                       <option value="none" disabled>Move to...</option>
@@ -64,12 +68,11 @@ this.state= {
                     </select>
                   </div>
                 </div>
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">{book.authors}</div>
-              </div>
+                <div className="book-title">{result.title}</div>
+                <div className="book-authors">{result.authors}</div>
+              </div> */}
             </li>
-          ))
-        )
+          )))
     }
         </ol>
         </div>
