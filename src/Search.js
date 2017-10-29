@@ -1,7 +1,21 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import escapeRegExp from 'escape-string-regexp'
 
 class Search extends Component {
+  state = {
+    query:'',
+    books:[]
+  }
+
+  updateQuery = (query) => {
+    this.setState({query: query.trim()})
+    BooksAPI.search(this.state.query,20).then(books => {this.setState({books})})
+    console.log(this.state.books)
+  }
+
+
   render() {
 
     return(
@@ -17,7 +31,12 @@ class Search extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              value={this.state.query}
+              onChange={(event) => {this.updateQuery(event.target.value)}}
+            />
 
           </div>
         </div>
