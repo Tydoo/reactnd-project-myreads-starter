@@ -1,13 +1,9 @@
 import React, { Component} from 'react'
 import * as BooksAPI from './BooksAPI'
-class BookshelfChanger extends Component {
-constructor() {
-  super();
-}
 
+class BookshelfChanger extends Component {
 
   render() {
-
 
     let changeShelf
     changeShelf = (eventValue) => {
