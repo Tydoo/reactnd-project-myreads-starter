@@ -14,13 +14,24 @@ class Search extends Component {
   books: PropTypes.array.isRequired
   }
 
-
-
   updateQuery = (query) => {
     this.setState({query: query.trim()})
     if (this.state.query !== '') {
-      BooksAPI.search(this.state.query,20).then(books => {this.setState({books})})
-      .then(() => {console.log(this.state.books)})
+      BooksAPI.search(this.state.query,20).then((books) => {
+        books.map((book, index, array) => {
+          console.log(book)
+          this.props.books.map((shelvedBook) => {
+            if (shelvedBook.title === book.title) {
+              console.log(shelvedBook)
+              array[index]= shelvedBook
+            } else {
+              book.shelf='none'
+            }
+          })
+        })
+
+        return this.setState({books})
+      })
     }
   }
 
@@ -31,11 +42,9 @@ class Search extends Component {
           )
         }
 
+
+
   render() {
-
-
-
-
 
     return(
       <div className="search-books">

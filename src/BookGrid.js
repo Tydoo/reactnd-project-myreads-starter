@@ -13,7 +13,7 @@ class BookGrid extends Component {
        if (book.shelf === bookshelf) {
          return book
        }
-       else return false
+       else return false //this should be changed to null
    })
 
    let cleanShelf = []
