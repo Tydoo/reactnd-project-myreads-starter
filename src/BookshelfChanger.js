@@ -1,27 +1,34 @@
 import React, { Component} from 'react'
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
 
 class BookshelfChanger extends Component {
-
+  static PropTypes= {
+    thisBook: PropTypes.object.isRequired,
+    books:PropTypes.array.isRequired,
+    updateBookshelf: PropTypes.func.isRequired
+  }
   render() {
+    const { thisBook, books, updateBookshelf} = this.props
 
     let changeShelf
+
     changeShelf = (eventValue) => {
       console.log(eventValue)
-      BooksAPI.update(this.props.thisBook.id, eventValue)
-        this.props.books.map( book => {
-          if (book.id === this.props.thisBook.id) {
+      BooksAPI.update(thisBook.id, eventValue)
+        books.map( book => {
+          if (book.id === thisBook.id) {
             BooksAPI.update(book, eventValue).then(() =>
-              {this.props.updateBookshelf()}
+              {updateBookshelf()}
             )
               }
-              else {console.log ("no match")}
+              else {false}
             })
           }
 
     return(
       <div className="book-shelf-changer">
-        <select defaultValue={this.props.thisBook.shelf} onChange={(event) => {changeShelf(event.target.value)}}>
+        <select defaultValue={thisBook.shelf} onChange={(event) => {changeShelf(event.target.value)}}>
           <option value="none" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>

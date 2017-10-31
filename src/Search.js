@@ -11,18 +11,20 @@ class Search extends Component {
   }
 
   static propTypes = {
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  updateBookshelf: PropTypes.func.isRequired
   }
 
+//this method fetches a list of books from BE and then
+// replaces any book objects that are already on a shelf
+// in order to reflect the books state
   updateQuery = (query) => {
     this.setState({query: query.trim()})
-    if (this.state.query !== '') {
-      BooksAPI.search(this.state.query,20).then((books) => {
+    if (query !== '') {
+      BooksAPI.search(query,20).then((books) => {
         books.map((book, index, array) => {
-          console.log(book)
-          this.props.books.map((shelvedBook) => {
+          books.map((shelvedBook) => {
             if (shelvedBook.title === book.title) {
-              console.log(shelvedBook)
               array[index]= shelvedBook
             } else {
               book.shelf='none'
@@ -45,6 +47,7 @@ class Search extends Component {
 
 
   render() {
+    const { query, books } = this.state
 
     return(
       <div className="search-books">
@@ -62,7 +65,7 @@ class Search extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              value={this.state.query}
+              value={query}
               onChange={(event) => {this.updateQuery(event.target.value)}}
             />
 
@@ -70,7 +73,7 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.books !== undefined && (this.state.books.map((book) => (
+            {books !== undefined && (books.map((book) => (
 
                 <li key={book.id}>
                   <div className="book">

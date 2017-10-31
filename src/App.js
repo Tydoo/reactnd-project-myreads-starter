@@ -6,7 +6,6 @@ import Search from './Search'
 import BookGrid from './BookGrid'
 import './App.css'
 
-
 class BooksApp extends React.Component {
 
   constructor() {
@@ -16,6 +15,8 @@ class BooksApp extends React.Component {
       books: [],
       shelf: []
     }
+    // declaring constructor and binding method in order to
+    // pass down through child components
     this.updateBookshelf= this.updateBookshelf.bind(this)
   }
 
@@ -31,12 +32,13 @@ class BooksApp extends React.Component {
 
   render() {
 
-      console.log(this.state.books)
+    const { books }= this.state
+
     return (
       <div className="app">
         <Route path="/search" render={() => (
           <Search
-            books={this.state.books}
+            books={books}
             updateBookshelf={this.updateBookshelf}
           />
         )} />
@@ -53,7 +55,7 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                         <BookGrid
-                          books={this.state.books}
+                          books={books}
                           bookshelf="currentlyReading"
                           updateBookshelf={this.updateBookshelf}
                         />
@@ -63,7 +65,7 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
                   <BookGrid
-                    books={this.state.books}
+                    books={books}
                     bookshelf="wantToRead"
                     updateBookshelf={this.updateBookshelf}
                   />
@@ -73,7 +75,7 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
                   <BookGrid
-                    books={this.state.books}
+                    books={books}
                     bookshelf="read"
                     updateBookshelf={this.updateBookshelf}
                   />
