@@ -12,17 +12,21 @@ class BooksApp extends React.Component {
     super();
 
     this.state = {
-      books: [],
-      shelf: []
+      books: []
     }
     // declaring constructor and binding method in order to
     // pass down through child components
     this.updateBookshelf= this.updateBookshelf.bind(this)
   }
 
-  updateBookshelf = () => {
-    BooksAPI.getAll().then((books) => {this.setState({books : books})})
-  }
+  updateBookshelf = (book, shelf) => {
+  BooksAPI.update(book, shelf).then(() => {
+    book.shelf = shelf
+    this.setState(state => ({
+      books: state.books.filter(b=> b.id !== book.id).concat([book])
+    }))
+  })
+}
 
   componentDidMount() {
   BooksAPI.getAll().then((books) => {

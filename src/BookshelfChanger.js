@@ -19,7 +19,7 @@ class BookshelfChanger extends Component {
         books.map( book => {
           if (book.id === thisBook.id) {
             BooksAPI.update(book, eventValue).then(() =>
-              {updateBookshelf()}
+              {updateBookshelf(book, eventValue)}
             )
               }
               else {false}

@@ -19,30 +19,42 @@ class Search extends Component {
 // replaces any book objects that are already on a shelf
 // in order to reflect the books state
   updateQuery = (query) => {
-    this.setState({query: query.trim()})
+    this.setState({query: query})
     if (query !== '') {
       BooksAPI.search(query,20).then((books) => {
-        books.map((book, index, array) => {
-          books.map((shelvedBook) => {
-            if (shelvedBook.title === book.title) {
-              array[index]= shelvedBook
-            } else {
-              book.shelf='none'
-            }
-          })
-        })
+        if (books.error) {
+          this.setState({ books:[] })
+        }
+        else {
+          books.map((book, index, array) => {
+            if (book.imageLinks === undefined) {
+               book.imageLinks={}
+               book.imageLinks.thumbnail='http://via.placeholder.com/128x193?text=No%20Cover'
 
-        return this.setState({books})
+            }
+            this.props.books.map((shelvedBook) => {
+              if (shelvedBook.id === book.id) {
+                array[index]= shelvedBook
+              } else {
+                book.shelf='none'
+              }
+            })
+          })
+
+          return this.setState({books})
+        }
+
       })
+    } else {
+      this.setState({ books: [] })
     }
   }
 
-  changeShelf = (eventValue, book) => {
-    console.log(eventValue)
-          BooksAPI.update(book, eventValue).then(() =>
-            {this.props.updateBookshelf()}
-          )
-        }
+  // changeShelf = (eventValue, book) => {
+  //
+  //           {this.props.updateBookshelf(book, eventValue)}
+  //         )
+  //       }
 
 
 
@@ -73,14 +85,15 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {books !== undefined && (books.map((book) => (
+            {books !== '[]' && (books.map((book) => (
 
                 <li key={book.id}>
                   <div className="book">
                     <div className="book-top">
-                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}></div>
+                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks.thumbnail})`
+                        }}></div>
                       <div className="book-shelf-changer">
-                        <select defaultValue={book.shelf} onChange={(event) => {this.changeShelf(event.target.value,book)}}>
+                        <select defaultValue={book.shelf} onChange={(event) => {this.props.updateBookshelf(book, event.target.value)}}>
                           <option value="none" disabled>Move to...</option>
                           <option value="currentlyReading">Currently Reading</option>
                           <option value="wantToRead">Want to Read</option>
@@ -90,7 +103,7 @@ class Search extends Component {
                       </div>
                     </div>
                     <div className="book-title">{book.title}</div>
-                    <div className="book-authors">{book.authors}</div>
+                    <div className="book-authors">{book.authors ? book.authors.join(', ') : ''}</div>
                   </div>
                 </li>
 
