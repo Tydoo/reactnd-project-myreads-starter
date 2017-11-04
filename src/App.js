@@ -1,10 +1,11 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
-import { Link } from 'react-router-dom'
-import { Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
+import MainPage from './main-page'
 import Search from './Search'
-import BookGrid from './BookGrid'
 import './App.css'
+import NotFound from './404'
+
 
 class BooksApp extends React.Component {
 
@@ -40,6 +41,7 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
+        <Switch>
         <Route path="/search" render={() => (
           <Search
             books={books}
@@ -48,51 +50,16 @@ class BooksApp extends React.Component {
         )} />
 
           <Route exact path="/" render={() => (
-
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                        <BookGrid
-                          books={books}
-                          bookshelf="currentlyReading"
-                          updateBookshelf={this.updateBookshelf}
-                        />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                  <BookGrid
-                    books={books}
-                    bookshelf="wantToRead"
-                    updateBookshelf={this.updateBookshelf}
-                  />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                  <BookGrid
-                    books={books}
-                    bookshelf="read"
-                    updateBookshelf={this.updateBookshelf}
-                  />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to="/search">Add a book</Link>
-            </div>
-          </div>
+            <MainPage
+              books={books}
+              updateBookshelf={this.updateBookshelf}
+             />
         )} />
+        <Route path="*" render= {() => (
+          <NotFound />
+        )}/>
 
+      </Switch>
       </div>
     )
   }

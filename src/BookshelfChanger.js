@@ -14,7 +14,6 @@ class BookshelfChanger extends Component {
     let changeShelf
 
     changeShelf = (eventValue) => {
-      console.log(eventValue)
       BooksAPI.update(thisBook.id, eventValue)
         books.map( book => {
           if (book.id === thisBook.id) {

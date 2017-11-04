@@ -18,6 +18,7 @@ class Search extends Component {
 //this method fetches a list of books from BE and then
 // replaces any book objects that are already on a shelf
 // in order to reflect the books state
+
   updateQuery = (query) => {
     this.setState({query: query})
     if (query !== '') {
@@ -49,13 +50,6 @@ class Search extends Component {
       this.setState({ books: [] })
     }
   }
-
-  // changeShelf = (eventValue, book) => {
-  //
-  //           {this.props.updateBookshelf(book, eventValue)}
-  //         )
-  //       }
-
 
 
   render() {

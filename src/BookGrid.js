@@ -1,6 +1,6 @@
-import React, { Component} from 'react'
-import BookshelfChanger from './BookshelfChanger'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import Book from './book'
 
 class BookGrid extends Component {
 
@@ -32,22 +32,16 @@ class BookGrid extends Component {
     return(
 
     <ol className="books-grid">
-      {/*map over book html and display book data being passed in from parent's state*/}
+      {/*map over book component and display book data being passed in from parent's state*/}
       {cleanShelf.map((book) => (
         <li key={book.id}>
-          <div className="book">
-            <div className="book-top">
-              <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}></div>
-              <BookshelfChanger
-                books={books}
-                thisBook={book}
-                //the below prop is being passed down from parent to child of child
-                updateBookshelf={updateBookshelf}
-              />
-            </div>
-            <div className="book-title">{book.title}</div>
-            <div className="book-authors">{book.authors ? book.authors.join(', ') : ''}</div>
-          </div>
+          <Book
+            bookshelf={bookshelf}
+            books={books}
+            thisBook={book}
+            //the below prop is being passed down from App to BookshelfChanger
+            updateBookshelf={updateBookshelf}
+           />
         </li>
       ))}
 
